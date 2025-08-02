@@ -3,6 +3,7 @@ import { FMP_API_KEY } from "./config.js";
 const MOCK_MODE = true; // Set to false to use the real API
 
 const mockResults = [
+  //
   { symbol: "AAPL", name: "Apple Inc." },
   { symbol: "MSFT", name: "Microsoft Corporation" },
   { symbol: "GOOG", name: "Alphabet Inc." },
