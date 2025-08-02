@@ -8,14 +8,18 @@ export class Renderer {
     }
     const $ul = $('<ul class="list-group"></ul>');
     results.forEach((company) => {
-      const $li = $(
-        `<li class="list-group-item">
-          <span>
+      const $li = $(`
+        <li class="list-group-item">
+          <a href="/company.html?symbol=${encodeURIComponent(
+            company.symbol
+          )}" class="text-decoration-none text-dark">
             ${company.name}
-            <span class="badge bg-primary rounded-pill ms-2">${company.symbol}</span>
-          </span>
-        </li>`
-      );
+            <span class="badge bg-primary rounded-pill ms-2">${
+              company.symbol
+            }</span>
+          </a>
+        </li>
+      `);
       $ul.append($li);
     });
     $resultDiv.append($ul);
