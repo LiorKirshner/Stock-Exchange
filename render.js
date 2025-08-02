@@ -6,9 +6,16 @@ export class Renderer {
       $resultDiv.text("no results");
       return;
     }
-    const $ul = $("<ul></ul>");
+    const $ul = $('<ul class="list-group"></ul>');
     results.forEach((company) => {
-      const $li = $(`<li>${company.name} (${company.symbol})</li>`);
+      const $li = $(
+        `<li class="list-group-item">
+          <span>
+            ${company.name}
+            <span class="badge bg-primary rounded-pill ms-2">${company.symbol}</span>
+          </span>
+        </li>`
+      );
       $ul.append($li);
     });
     $resultDiv.append($ul);
