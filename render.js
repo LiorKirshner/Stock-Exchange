@@ -10,7 +10,7 @@ export class Renderer {
     results.forEach((company) => {
       const $li = $(`
         <li class="list-group-item">
-          <a href="/company.html?symbol=${encodeURIComponent(
+          <a href="/company/company.html?symbol=${encodeURIComponent(
             company.symbol
           )}" class="text-decoration-none text-dark">
             ${company.name}

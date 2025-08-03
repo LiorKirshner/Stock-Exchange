@@ -1,9 +1,8 @@
 import { FMP_API_KEY } from "./config.js";
 
-const MOCK_MODE = true; // Set to false to use the real API
+const MOCK_MODE = false; // Set to false to use the real API
 
 const mockResults = [
-  //
   { symbol: "AAPL", name: "Apple Inc." },
   { symbol: "MSFT", name: "Microsoft Corporation" },
   { symbol: "GOOG", name: "Alphabet Inc." },
@@ -21,6 +20,16 @@ export class Model {
     if (MOCK_MODE) {
       // Simulate network delay
       await new Promise((res) => setTimeout(res, 300));
+      if (url.includes("company/profile")) {
+        return {
+          profile: {
+            companyName: "Mocked Company",
+            description: "This is a mocked company description.",
+            website: "https://example.com",
+            image: "https://via.placeholder.com/100",
+          },
+        };
+      }
       return mockResults;
     }
     const res = await fetch(url);
@@ -30,9 +39,14 @@ export class Model {
   }
 
   async fetchStockByName(query) {
-    const url = `https://financialmodelingprep.com/api/v3/search?query=${encodeURIComponent(
+    const url = `https://financialmodelingprep.com/api/v3/search-ticker?query=${encodeURIComponent(
       query
     )}&limit=10&exchange=NASDAQ&apikey=${FMP_API_KEY}`;
     return await this.safeFetch(url);
+  }
+  async fetchCompanyProfile(symbol) {
+    const url = `https://financialmodelingprep.com/api/v3/company/profile/${symbol}?apikey=${FMP_API_KEY}`;
+    const data = await this.safeFetch(url);
+    return data.profile; // API returns { profile: { ... } }
   }
 }
