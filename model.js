@@ -1,6 +1,6 @@
 import { FMP_API_KEY } from "./config.js";
 
-const MOCK_MODE = false; // Set to false to use the real API
+const MOCK_MODE = true; // Set to false to use the real API
 
 const mockResults = [
   { symbol: "AAPL", name: "Apple Inc." },
@@ -20,15 +20,39 @@ export class Model {
     if (MOCK_MODE) {
       // Simulate network delay
       await new Promise((res) => setTimeout(res, 300));
+      // תמיד מחזיר את אפל בפרופיל
       if (url.includes("company/profile")) {
         return {
           profile: {
-            companyName: "Mocked Company",
-            description: "This is a mocked company description.",
-            website: "https://example.com",
-            image: "https://via.placeholder.com/100",
+            companyName: "Apple Inc.",
+            symbol: "AAPL",
+            industry: "Technology",
+            description:
+              "Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide.",
+            website: "https://www.apple.com",
+            image: "https://logo.clearbit.com/apple.com",
+            price: 195.12,
+            changesPercentage: 1.23,
           },
         };
+      }
+      // חיפוש מחזיר את כל הרשימה
+      if (url.includes("search-ticker")) {
+        return mockResults;
+      }
+      // היסטוריית מחירים לדוגמה (רק לאפל)
+      if (url.includes("historical-price-full")) {
+        const today = new Date();
+        const data = [];
+        for (let i = 0; i < 36; i++) {
+          const d = new Date(today);
+          d.setMonth(today.getMonth() - i);
+          data.push({
+            date: d.toISOString().slice(0, 10),
+            close: 120 + Math.sin(i / 3) * 10 + i * 2,
+          });
+        }
+        return { historical: data.reverse() };
       }
       return mockResults;
     }
